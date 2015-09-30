@@ -2,6 +2,7 @@ import random
 import math
 import numpy as np
 import scipy.io
+from scipy import misc
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
@@ -47,14 +48,16 @@ def callback(X, B, S):
     plt.title("differences")
     plt.show()
 
-images = scipy.io.loadmat("IMAGES.mat")["IMAGES"]
-patch_size = 8
-num_patches = 4
+#images = scipy.io.loadmat("IMAGES.mat")["IMAGES"]
+images = misc.lena() #获取一张图片
+patch_size = 8 #获取patch的尺寸
+num_patches = 4 #获取patch的数量
 columns = []
-for i in xrange(num_patches):
-    j = random.randint(0, images.shape[2] - 1)
-    y, x = [random.randint(0, images.shape[d] - patch_size) for d in (0, 1)]
-    column = images[x:x+patch_size, y:y+patch_size, j].reshape((patch_size**2, 1))
+for i in xrange(num_patches): #0、1、2、...、num_patches循环
+    #j = random.randint(0, images.shape[2] - 1)  #任意的选择一个通道
+    y, x = [random.randint(0, images.shape[d] - patch_size) for d in (0, 1)] #任意的产生一组坐标
+    #column = images[x:x+patch_size, y:y+patch_size, j].reshape((patch_size**2, 1)) #提取某一通道上的patch
+    column = images[x:x+patch_size, y:y+patch_size].reshape((patch_size**2, 1)) #提取patch，单通道不需要j，并且变为列向量
     columns.append(column)
 X = np.hstack(columns)
 
@@ -63,5 +66,5 @@ X = np.hstack(columns)
 #print [x.shape for x in svd]
 #callback(X, svd[0], np.dot(np.diag(svd[1]), svd[2]))
 
-num_bases = 64
+num_bases = 64#要产生基的个数
 sc.sparse_coding(X, num_bases, 0.4, 100, lambda B, S: callback(X, B, S))

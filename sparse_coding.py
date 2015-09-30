@@ -18,10 +18,13 @@ def sparse_coding(X, num_bases, beta, num_iters, iter_callback):
         # shuffle samples 打乱计算
         np.random.shuffle(X.T) #按照第一维度进行打乱顺序
 
-        logging.info("basis %i %s" % (t, B))
+        print "basis %i %s" % (t, B)
+        #logging.info("basis %i %s" % (t, B))
         for j in xrange(X.shape[1]):
+            print("t %i sample %i %s" % (t, j, X[:, j]))
             logging.info("t %i sample %i %s" % (t, j, X[:, j]))
             S[:, j] = l1ls_featuresign(B, X[:, j], beta, S[:, j])
+            print("t %i coding %i %s" % (t, j, S[:, j]))
             logging.info("t %i coding %i %s" % (t, j, S[:, j]))
         S[np.isnan(S)] = 0
 

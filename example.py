@@ -61,6 +61,7 @@ for i in xrange(num_patches): #0、1、2、...、num_patches循环
     column = images[x:x+patch_size, y:y+patch_size].reshape((patch_size**2, 1)) #提取patch，单通道不需要j，并且变为列向量
     columns.append(column)
 X = np.hstack(columns)
+X = np.asarray(X,dtype='float64')
 print (X.shape,X.dtype)
 # test callback function on svd
 #svd = np.linalg.svd(X, full_matrices=False)

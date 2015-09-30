@@ -1,3 +1,4 @@
+# coding:utf-8
 import os
 import numpy as np
 import logging
@@ -6,15 +7,16 @@ from featuresign import l1ls_featuresign
 from bases import l2ls_learn_basis_dual
 
 def sparse_coding(X, num_bases, beta, num_iters, iter_callback):
-    #���ȳ�ʼ������ϵ�� B ��S
-    B = np.random.random((X.shape[0], num_bases)) - 0.5 #random��0��1��
+    #首先初始化基和系数 B ，S
+    B = np.random.random((X.shape[0], num_bases)) - 0.5 #random是0到1的
     B = B / np.sqrt(np.sum(B**2, 0))
 
     S = np.zeros((num_bases, X.shape[1]))
 
+    #通过设置的迭代次数进行计算
     for t in xrange(num_iters):
-        # shuffle samples
-        np.random.shuffle(X.T)
+        # shuffle samples 打乱计算
+        np.random.shuffle(X.T) #按照第一维度进行打乱顺序
 
         logging.info("basis %i %s" % (t, B))
         for j in xrange(X.shape[1]):

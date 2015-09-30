@@ -1,3 +1,4 @@
+# coding:utf-8
 import random
 import math
 import numpy as np
@@ -49,22 +50,22 @@ def callback(X, B, S):
     plt.show()
 
 #images = scipy.io.loadmat("IMAGES.mat")["IMAGES"]
-images = misc.lena() #»ñÈ¡Ò»ÕÅÍ¼Æ¬
-patch_size = 8 #»ñÈ¡patchµÄ³ß´ç
-num_patches = 4 #»ñÈ¡patchµÄÊıÁ¿
+images = misc.lena() #è·å–ä¸€å¼ å›¾ç‰‡
+patch_size = 8 #è·å–patchçš„å°ºå¯¸
+num_patches = 4 #è·å–patchçš„æ•°é‡
 columns = []
-for i in xrange(num_patches): #0¡¢1¡¢2¡¢...¡¢num_patchesÑ­»·
-    #j = random.randint(0, images.shape[2] - 1)  #ÈÎÒâµÄÑ¡ÔñÒ»¸öÍ¨µÀ
-    y, x = [random.randint(0, images.shape[d] - patch_size) for d in (0, 1)] #ÈÎÒâµÄ²úÉúÒ»×é×ø±ê
-    #column = images[x:x+patch_size, y:y+patch_size, j].reshape((patch_size**2, 1)) #ÌáÈ¡Ä³Ò»Í¨µÀÉÏµÄpatch
-    column = images[x:x+patch_size, y:y+patch_size].reshape((patch_size**2, 1)) #ÌáÈ¡patch£¬µ¥Í¨µÀ²»ĞèÒªj£¬²¢ÇÒ±äÎªÁĞÏòÁ¿
+for i in xrange(num_patches): #0ã€1ã€2ã€...ã€num_patcheså¾ªç¯
+    #j = random.randint(0, images.shape[2] - 1)  #ä»»æ„çš„é€‰æ‹©ä¸€ä¸ªé€šé“
+    y, x = [random.randint(0, images.shape[d] - patch_size) for d in (0, 1)] #ä»»æ„çš„äº§ç”Ÿä¸€ç»„åæ ‡
+    #column = images[x:x+patch_size, y:y+patch_size, j].reshape((patch_size**2, 1)) #æå–æŸä¸€é€šé“ä¸Šçš„patch
+    column = images[x:x+patch_size, y:y+patch_size].reshape((patch_size**2, 1)) #æå–patchï¼Œå•é€šé“ä¸éœ€è¦jï¼Œå¹¶ä¸”å˜ä¸ºåˆ—å‘é‡
     columns.append(column)
 X = np.hstack(columns)
-
+print (X.shape,X.dtype)
 # test callback function on svd
 #svd = np.linalg.svd(X, full_matrices=False)
 #print [x.shape for x in svd]
 #callback(X, svd[0], np.dot(np.diag(svd[1]), svd[2]))
 
-num_bases = 64#Òª²úÉú»ùµÄ¸öÊı
+num_bases = 64#è¦äº§ç”ŸåŸºçš„ä¸ªæ•°
 sc.sparse_coding(X, num_bases, 0.4, 100, lambda B, S: callback(X, B, S))
